@@ -7,6 +7,7 @@ import { FormattedApiError } from "./instance";
 type HttpMethod = "get" | "post" | "put" | "delete" | "patch";
 
 export function createServerApiCall(baseURL: string) {
+    console.log(baseURL, "BASE URL IN API SERVER")
     const apiClient = axios.create({
         baseURL,
         headers: { "Content-Type": "application/json" },
@@ -41,13 +42,13 @@ export function createServerApiCall(baseURL: string) {
         config?: Record<string, unknown>,
     ): Promise<T> {
         try {
+
+            console.log(url, "URL IN API_SERVER")
             const cookieStore = await cookies();
             const token = cookieStore.get("access_token");
-            const deviceId = cookieStore.get("device_id")?.value || crypto.randomUUID();
 
             const headers: Record<string, string> = {};
             if (token) headers.Authorization = `Bearer ${token.value}`;
-            if (deviceId) headers["x-device-id"] = deviceId;
 
             const axiosConfig: AxiosRequestConfig = {
                 method,

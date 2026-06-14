@@ -41,6 +41,12 @@ const useLogin = ({ onSuccess, onError, onFinally }: Props) => {
 
             },
             onError: (err: any) => {
+
+                if (err.status == 403) {
+                    form.setError("email", {
+                        message: err.message || "Forbidden access or user not found"
+                    })
+                }
                 onError?.(err)
 
             },
