@@ -1,7 +1,10 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-    entry: ["src/index.ts"],
+    entry: {
+        index: "src/index.ts",           // client components
+        server: "src/server.ts",         // server-only code
+    },
     format: ["esm", "cjs"],
     dts: true,
     clean: true,
@@ -22,8 +25,8 @@ export default defineConfig({
         "class-variance-authority",
         "clsx",
         "tailwind-merge",
-        "axios",        // ← this was the big one
-        "sonner",       // ← toast library
+        "axios",
+        "sonner",
     ],
     esbuildOptions(options) {
         options.alias = {
