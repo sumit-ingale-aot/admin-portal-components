@@ -1,3 +1,4 @@
+import { loginAdmin } from "@/actions/auth.actions";
 import { setCookies } from "@/actions/cookies.action";
 import { useAuth } from "@/context/auth.provider";
 import { apiHandler } from "@/utils/api-handler";
@@ -14,37 +15,43 @@ interface Props {
     loginFn: (data: LoginFormData) => Promise<any>;
 }
 
+
 const useLogin = ({ onSuccess, onError, onFinally, loginFn }: Props) => {
-    const router = useRouter();
-    const { config } = useAuth();
+
     const form = useForm<LoginFormData>({
         mode: "onChange",
         reValidateMode: "onChange",
         resolver: zodResolver(loginValidationSchema),
-        defaultValues: { email: "", password: "" }
-    });
+        defaultValues: {
+            email: "",
+            password: ""
+        }
+    })
+
 
     const onSubmit = async () => {
         await apiHandler(() => loginFn(form.getValues()), {
             onSuccess: async (res) => {
-                const data = res as { accessToken: string };
-                await setCookies({ accessToken: data.accessToken });
-                onSuccess?.(res);
-                router.push(config.redirectUrl || "/dashboard");
+                onSuccess?.(res)
+
             },
             onError: (err: any) => {
+
                 if (err.status == 403) {
                     form.setError("email", {
                         message: err.message || "Forbidden access or user not found"
-                    });
+                    })
                 }
-                onError?.(err);
+                onError?.(err)
+
             },
-            onFinally: () => onFinally?.()
-        });
-    };
+            onFinally: () => {
+                onFinally?.()
+            }
+        })
+    }
 
     return { form, onSubmit };
-};
+}
 
 export default useLogin;

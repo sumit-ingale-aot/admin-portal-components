@@ -1,5 +1,4 @@
 
-import "server-only";
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
 import { cookies } from "next/headers";
 import { FormattedApiError } from "./instance";

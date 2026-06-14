@@ -2,15 +2,21 @@
 
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { EyeOffIcon, EyeIcon } from "lucide-react";
-import { Field } from "@/components/ui/field";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { EyeOffIcon, EyeIcon } from "lucide-react"
+import {
+    Field,
+} from "@/components/ui/field"
+import {
+    InputGroup,
+    InputGroupAddon,
+    InputGroupInput,
+} from "@/components/ui/input-group"
 import useUtilsStore from "@/store/utils.store";
 import useLogin from "@/hooks/use-login";
 import { Spinner } from "../ui/spinner";
 import ForgotPasswordModal from "./forgot-password-dialog";
-import { LoginFormData } from "@/validation-schema/form-data-types";
-import { ForgotPasswordFormData } from "@/validation-schema/form-data-types";
+import { ForgotPasswordFormData, LoginFormData } from "@/validation-schema/form-data-types";
+
 
 interface Props {
     title?: string;
@@ -18,14 +24,13 @@ interface Props {
     onError?: (data: any) => void;
     onFinally?: () => void;
     loginFn: (data: LoginFormData) => Promise<any>;
-    forgotPasswordFn: (data: ForgotPasswordFormData) => Promise<any>;
+    forgotPasswordFn: (data: ForgotPasswordFormData) => Promise<any>
 }
 
 const Form = ({ title, onError, onFinally, onSuccess, loginFn, forgotPasswordFn }: Props) => {
     const { showPassword: showPass, setShowPassword, setOpenForgotPasswordModal } = useUtilsStore();
     const { form, onSubmit } = useLogin({ onError, onFinally, onSuccess, loginFn });
     const { handleSubmit, register } = form;
-
     return <>
         <form className="max-w-lg w-full bg-white flex flex-col gap-5 rounded-lg shadow-sm p-5" onSubmit={handleSubmit(onSubmit)}>
             <p className="text-center font-bold text-xl">{title || "Login Form"}</p>
@@ -48,16 +53,16 @@ const Form = ({ title, onError, onFinally, onSuccess, loginFn, forgotPasswordFn 
                     </InputGroupAddon>
                 </InputGroup>
             </Field>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col  gap-2">
                 <span className="text-sm pl-2 hover:underline cursor-pointer" onClick={() => setOpenForgotPasswordModal(true)}>Forgot Password?</span>
                 <Button disabled={form.formState.isSubmitting} type="submit">
                     {form.formState.isSubmitting && <Spinner />}&nbsp;
-                    Login
-                </Button>
+                    Login</Button>
             </div>
         </form>
         <ForgotPasswordModal forgotPasswordFn={forgotPasswordFn} />
     </>
-};
+
+}
 
 export default Form;
