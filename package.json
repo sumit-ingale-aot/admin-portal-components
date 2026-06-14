@@ -1,6 +1,6 @@
 {
   "name": "@sumit-ingale-aot/admin-portal-components",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "This library contains the login and forgot password microfrontend for admins portals",
   "author": {
     "name": "Sumit Ingale",
