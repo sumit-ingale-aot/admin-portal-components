@@ -1,18 +1,17 @@
-import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import useUtilsStore from "@/store/utils.store";
 import { Button } from "../ui/button";
 import useForgotPassword from "@/hooks/use-forgot-password";
 import { Input } from "../ui/input";
+import { ForgotPasswordFormData } from "@/validation-schema/form-data-types";
 
-const ForgotPasswordModal = () => {
+interface Props {
+    forgotPasswordFn: (data: ForgotPasswordFormData) => Promise<any>;
+}
+
+const ForgotPasswordModal = ({ forgotPasswordFn }: Props) => {
     const { openForgotPasswordModal, setOpenForgotPasswordModal } = useUtilsStore();
-    const { form, onSubmit } = useForgotPassword();
+    const { form, onSubmit } = useForgotPassword({ forgotPasswordFn });
 
     const handleClose = () => {
         setOpenForgotPasswordModal(false);
