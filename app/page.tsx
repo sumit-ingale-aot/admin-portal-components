@@ -10,7 +10,8 @@ const Page = () => (
     config={{
       apiUrl: "https://api.targetmobiles.com",
       loginUrl: "/admins/login",
-      forgotPasswordUrl: "/admins/forgot-password",
+      forgotPasswordUrl: "/admins/forgot",
+      redirectUrl: "/dashboard"
     }}
   >
     <FormLayout
