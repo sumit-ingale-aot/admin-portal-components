@@ -8,6 +8,7 @@ export interface AuthConfig {
     apiUrl: string;
     loginUrl: string;
     forgotPasswordUrl: string;
+    redirectUrl?: string;
 }
 
 type ApiCall = <T>(

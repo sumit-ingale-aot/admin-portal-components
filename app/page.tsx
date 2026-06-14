@@ -11,8 +11,11 @@ const Page = () => (
       forgotPasswordUrl: "/admins/forgot-password",
     }}
   >
-    <FormLayout bgImage="eojf" logo="adjfhba">
-      <Form />
+    <FormLayout
+      bgImage="https://admin.targetmobiles.com/img/tg-bg.27ac45d5.jpg"
+      logo="https://admin.targetmobiles.com/img/target-logo.689bb7df.png">
+      <Form
+      />
     </FormLayout>
   </AuthProvider>
 );

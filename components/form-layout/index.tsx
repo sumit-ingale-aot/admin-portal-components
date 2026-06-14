@@ -22,14 +22,14 @@ const FormLayout = ({ classname, children, bgImage, logo }: Props) => {
                 logo &&
                 <div className="col-span-12 lg:block flex justify-center items-center lg:col-span-6 lg:mt-35">
 
-                    <Image alt="image" src="https://admin.targetmobiles.com/img/target-logo.689bb7df.png" className="mt-10" width={400} height={400} />
+                    <Image alt="image" src={logo} className="mt-10" width={400} height={400} />
                 </div>
             }
         </div>
         {
             bgImage &&
             <div className="absolute top-0 left-0 w-full h-full z-[-1]">
-                <Image alt="bg image" fill src='https://admin.targetmobiles.com/img/tg-bg.27ac45d5.jpg' />
+                <Image alt="bg image" fill src={bgImage} />
             </div>
         }
     </div>
