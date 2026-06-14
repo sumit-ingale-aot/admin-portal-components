@@ -15,14 +15,14 @@ yarn.lock
 bun.lock
 # testing
 /coverage
-
+.npmrc
 # next.js
 /.next/
 /out/
-
+src
 # production
 /build
-
+/dist
 # misc
 .DS_Store
 *.pem
