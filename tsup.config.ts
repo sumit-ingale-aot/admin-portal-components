@@ -9,6 +9,7 @@ export default defineConfig({
     clean: true,
     external: [
         /^@radix-ui\/.*/,
+        "radix-ui",
         "server-only",
         "react",
         "next",
