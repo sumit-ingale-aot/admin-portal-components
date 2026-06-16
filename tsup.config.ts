@@ -17,7 +17,6 @@ export default defineConfig({
         "next/headers",
         "react-dom",
         "lucide-react",
-        "zustand",
         "react-hook-form",
         "@hookform/resolvers",
         "@hookform/resolvers/zod",
@@ -25,12 +24,6 @@ export default defineConfig({
         "class-variance-authority",
         "clsx",
         "tailwind-merge",
-        "axios",
         "sonner",
-    ],
-    esbuildOptions(options) {
-        options.alias = {
-            "@": "./src",
-        };
-    },
+    ]
 });
