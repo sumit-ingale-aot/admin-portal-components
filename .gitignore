@@ -19,7 +19,6 @@ bun.lock
 # next.js
 /.next/
 /out/
-src
 # production
 /build
 /dist
