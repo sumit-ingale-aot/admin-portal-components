@@ -40,7 +40,7 @@ const DashboardLayout = ({ children, groups, roles, actions, user, logo }: Props
                         <header className="flex h-16 p-3 items-center border-b">
                             <SidebarTrigger />
                         </header>
-                        <main className="flex-1 overflow-y-auto p-3">
+                        <main className="flex-1 overflow-y-auto">
                             {children}
                         </main>
                     </div>

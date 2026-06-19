@@ -69,6 +69,7 @@ import {
     LogOut,
 } from "lucide-react"
 import Image from "next/image"
+import { cn } from "../../lib/utils"
 
 // ───────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -190,7 +191,11 @@ function NavItem({
                         <SidebarMenuButton
                             isActive={isActive || isChildActive}
                             tooltip={item.label}
-                            className="w-full"
+                            className={cn(
+                                "w-full",
+                                (isActive || isChildActive) &&
+                                "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                            )}
                         >
                             <Icon className="size-4 shrink-0" />
 
@@ -226,6 +231,10 @@ function NavItem({
                                         <SidebarMenuSubButton
                                             asChild
                                             isActive={childActive}
+                                            className={cn(
+                                                childActive &&
+                                                "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                                            )}
                                         >
                                             <Link href={child.href}>
                                                 <ChildIcon className="size-3.5 shrink-0" />
@@ -262,6 +271,10 @@ function NavItem({
                 asChild
                 isActive={isActive}
                 tooltip={item.label}
+                className={cn(
+                    isActive &&
+                    "bg-primary! text-primary-foreground! hover:bg-primary!/90 hover:text-primary-foreground!"
+                )}
             >
                 <Link href={item.href}>
                     <Icon className="size-4 shrink-0" />
@@ -324,19 +337,17 @@ export function AppSidebar({
             {/* ─────────────────────────────────────────────────────────────── */}
 
             <SidebarContent>
-                {visibleGroups.map((group) => (
-                    <SidebarGroup key={group.title}>
-                        <SidebarMenu>
-                            {group.items.map((item) => (
-                                <NavItem
-                                    key={item.href}
-                                    item={item}
-                                    roles={roles}
-                                />
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroup>
-                ))}
+                <SidebarGroup>
+                    <SidebarMenu>
+                        {visibleGroups.flatMap((group) => group.items).map((item) => (
+                            <NavItem
+                                key={item.href}
+                                item={item}
+                                roles={roles}
+                            />
+                        ))}
+                    </SidebarMenu>
+                </SidebarGroup>
             </SidebarContent>
 
             {/* ─────────────────────────────────────────────────────────────── */}
