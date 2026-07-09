@@ -166,10 +166,10 @@ function NavItem({
 
     const isChildActive =
         item.children?.some((child) =>
-            pathname.startsWith(child.href),
+            pathname === child.href || pathname.startsWith(`${child.href}/`),
         ) ?? false
 
-    const isActive = pathname === item.href
+    const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
 
     const [open, setOpen] = useState(isChildActive)
 
@@ -222,7 +222,7 @@ function NavItem({
                                 const ChildIcon = child.icon
 
                                 const childActive =
-                                    pathname === child.href
+                                    pathname === child.href || pathname.startsWith(`${child.href}/`)
 
                                 return (
                                     <SidebarMenuSubItem
