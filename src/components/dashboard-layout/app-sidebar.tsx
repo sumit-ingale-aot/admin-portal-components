@@ -4,12 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu"
+import { UserDropdown } from "./user-dropdown"
 
 import {
     Collapsible,
@@ -60,11 +55,8 @@ export interface SidebarNavGroup {
     items: SidebarNavItem[]
 }
 
-import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar"
-
 import {
     Building2,
-    ChevronDown,
     ChevronRight,
     LogOut,
 } from "lucide-react"
@@ -81,7 +73,8 @@ interface Workspace {
 }
 
 interface AppSidebarProps {
-    roles: string[]
+    roles: string[],
+    showActionsInFooter: boolean;
     groups: SidebarNavGroup[]
 
     workspaces?: Workspace[]
@@ -114,14 +107,6 @@ function hasAccess(
     )
 }
 
-function initials(name: string) {
-    return name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
-        .slice(0, 2)
-}
 
 /**
  * Recursively filters sidebar items based on user roles
@@ -299,7 +284,7 @@ function NavItem({
 export function AppSidebar({
     roles,
     groups,
-
+    showActionsInFooter,
     user,
     logo,
     actions
@@ -354,55 +339,16 @@ export function AppSidebar({
             {/* USER FOOTER */}
             {/* ─────────────────────────────────────────────────────────────── */}
 
-            <SidebarFooter>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <SidebarMenuButton className="h-10">
-                                    <Avatar className="size-6">
-                                        <AvatarImage
-                                            src={user?.profile}
-                                            alt="@shadcn"
-                                            className="grayscale"
-                                        />
-                                        <AvatarFallback className="text-xs">
-                                            {initials(user?.name || "User")}
-                                        </AvatarFallback>
-                                    </Avatar>
-
-                                    <div className="flex min-w-0 flex-col leading-none">
-                                        <span className="truncate text-sm font-medium">
-                                            {user?.name}
-                                        </span>
-
-                                        <span className="truncate text-xs text-muted-foreground">
-                                            {user?.email}
-                                        </span>
-                                    </div>
-
-                                    <ChevronDown className="ml-auto size-4 shrink-0 text-muted-foreground" />
-                                </SidebarMenuButton>
-                            </DropdownMenuTrigger>
-
-                            <DropdownMenuContent
-                                side="top"
-                                className="w-[--radix-popper-anchor-width]"
-                            >
-                                {
-                                    actions.map((action, idx) => {
-                                        const Icon = action.icon
-                                        return <DropdownMenuItem key={idx} onClick={action.action} className={`${action?.className ? action.className : ""} cursor-pointer`}>
-                                            <Icon className="mr-2 size-4" />
-                                            {action.name}
-                                        </DropdownMenuItem>
-                                    })
-                                }
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-            </SidebarFooter>
+            {
+                showActionsInFooter &&
+                <SidebarFooter>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <UserDropdown user={user} actions={actions} />
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarFooter>
+            }
         </Sidebar>
     )
 }
