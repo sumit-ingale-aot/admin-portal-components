@@ -24,11 +24,13 @@ interface Props {
     },
     logo: string;
     showActionsInFooter?: boolean
+    headerClass?: string;
+    sidebarHeaderClass?: string
 }
 
 
 
-const DashboardLayout = ({ children, groups, roles, actions, user, logo, showActionsInFooter = false }: Props) => {
+const DashboardLayout = ({ children, groups, roles, actions, user, logo, showActionsInFooter = false, headerClass, sidebarHeaderClass }: Props) => {
     return (
         <TooltipProvider>
             <SidebarProvider>
@@ -39,16 +41,23 @@ const DashboardLayout = ({ children, groups, roles, actions, user, logo, showAct
                     logo={logo}
                     groups={groups}
                     roles={roles}
+                    sidebarHeaderClass={sidebarHeaderClass}
                 />
 
                 <SidebarInset>
                     <div className="flex h-screen flex-col overflow-hidden">
-                        <header className="flex h-16 p-3 items-center justify-between border-b">
+                        <header className={`flex h-16 p-3 items-center justify-between border-b ${headerClass ? headerClass : ""}`}>
                             <SidebarTrigger />
 
                             {
                                 !showActionsInFooter && (
-                                    <UserDropdown user={user} actions={actions} />
+                                    <UserDropdown
+                                        user={user}
+                                        actions={actions}
+                                        className="w-fit max-w-[250px]"
+                                        side="bottom"
+                                        align="end"
+                                    />
                                 )
                             }
 

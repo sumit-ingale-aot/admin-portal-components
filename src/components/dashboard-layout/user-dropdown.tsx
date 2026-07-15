@@ -3,6 +3,7 @@ import { SidebarMenuButton } from "../ui/sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { ChevronDown } from "lucide-react"
 import { Actions } from "./app-sidebar"
+import { cn } from "../../lib/utils"
 
 export interface UserDropdownProps {
     user: {
@@ -11,6 +12,9 @@ export interface UserDropdownProps {
         profile?: string
     }
     actions: Actions[]
+    className?: string
+    side?: "top" | "right" | "bottom" | "left"
+    align?: "start" | "center" | "end"
 }
 
 function initials(name: string) {
@@ -22,11 +26,11 @@ function initials(name: string) {
         .slice(0, 2)
 }
 
-export function UserDropdown({ user, actions }: UserDropdownProps) {
+export function UserDropdown({ user, actions, className, side = "top", align = "center" }: UserDropdownProps) {
     return (
-        <DropdownMenu>
+        <DropdownMenu >
             <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className="h-10">
+                <SidebarMenuButton className={cn("h-10", className)}>
                     <Avatar className="size-6">
                         <AvatarImage
                             src={user?.profile}
@@ -38,7 +42,7 @@ export function UserDropdown({ user, actions }: UserDropdownProps) {
                         </AvatarFallback>
                     </Avatar>
 
-                    <div className="flex min-w-0 flex-col leading-none">
+                    <div className="flex min-w-0 flex-col leading-none text-left">
                         <span className="truncate text-sm font-medium">
                             {user?.name}
                         </span>
@@ -53,7 +57,8 @@ export function UserDropdown({ user, actions }: UserDropdownProps) {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent
-                side="top"
+                side={side}
+                align={align}
                 className="w-[--radix-popper-anchor-width]"
             >
                 {actions.map((action, idx) => {

@@ -86,6 +86,7 @@ interface AppSidebarProps {
     },
     logo: string;
     actions: Actions[];
+    sidebarHeaderClass?: string
 
 }
 
@@ -287,7 +288,8 @@ export function AppSidebar({
     showActionsInFooter,
     user,
     logo,
-    actions
+    actions,
+    sidebarHeaderClass
 }: AppSidebarProps) {
 
     // Filter groups/items based on roles
@@ -309,7 +311,7 @@ export function AppSidebar({
             {/* WORKSPACE SWITCHER */}
             {/* ─────────────────────────────────────────────────────────────── */}
 
-            <SidebarHeader>
+            <SidebarHeader className={`h-16 ${sidebarHeaderClass ? sidebarHeaderClass : ""}`}>
                 <SidebarMenu>
                     <SidebarMenuItem className="flex items-center justify-center py-2">
                         <Image src={logo} width={120} height={50} alt="logo" />
