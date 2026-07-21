@@ -346,7 +346,7 @@ export function AppSidebar({
                 <SidebarFooter>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <UserDropdown user={user} actions={actions} />
+                            <UserDropdown user={user} actions={actions} isSidebar={true} />
                         </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarFooter>

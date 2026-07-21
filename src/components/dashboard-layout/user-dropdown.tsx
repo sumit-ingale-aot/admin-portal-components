@@ -15,6 +15,7 @@ export interface UserDropdownProps {
     className?: string
     side?: "top" | "right" | "bottom" | "left"
     align?: "start" | "center" | "end"
+    isSidebar?: boolean
 }
 
 function initials(name: string) {
@@ -26,34 +27,46 @@ function initials(name: string) {
         .slice(0, 2)
 }
 
-export function UserDropdown({ user, actions, className, side = "top", align = "center" }: UserDropdownProps) {
+export function UserDropdown({ user, actions, className, side = "top", align = "center", isSidebar = false }: UserDropdownProps) {
+    const triggerContent = (
+        <>
+            <Avatar className="size-6">
+                <AvatarImage
+                    src={user?.profile}
+                    alt={user?.name || "User"}
+                    className="grayscale"
+                />
+                <AvatarFallback className="text-xs">
+                    {initials(user?.name || "User")}
+                </AvatarFallback>
+            </Avatar>
+
+            <div className="flex min-w-0 flex-col leading-none text-left">
+                <span className="truncate text-sm font-medium">
+                    {user?.name}
+                </span>
+
+                <span className="truncate text-xs opacity-70">
+                    {user?.email}
+                </span>
+            </div>
+
+            <ChevronDown className="ml-auto size-4 shrink-0 opacity-70" />
+        </>
+    )
+
     return (
         <DropdownMenu >
             <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className={cn("h-10", className)}>
-                    <Avatar className="size-6">
-                        <AvatarImage
-                            src={user?.profile}
-                            alt={user?.name || "User"}
-                            className="grayscale"
-                        />
-                        <AvatarFallback className="text-xs">
-                            {initials(user?.name || "User")}
-                        </AvatarFallback>
-                    </Avatar>
-
-                    <div className="flex min-w-0 flex-col leading-none text-left">
-                        <span className="truncate text-sm font-medium">
-                            {user?.name}
-                        </span>
-
-                        <span className="truncate text-xs text-muted-foreground">
-                            {user?.email}
-                        </span>
-                    </div>
-
-                    <ChevronDown className="ml-auto size-4 shrink-0 text-muted-foreground" />
-                </SidebarMenuButton>
+                {isSidebar ? (
+                    <SidebarMenuButton className={cn("h-10", className)}>
+                        {triggerContent}
+                    </SidebarMenuButton>
+                ) : (
+                    <button className={cn("flex items-center gap-2 h-10 px-2 rounded-md transition-colors hover:bg-black/10 dark:hover:bg-white/10 outline-none w-full", className)}>
+                        {triggerContent}
+                    </button>
+                )}
             </DropdownMenuTrigger>
 
             <DropdownMenuContent
