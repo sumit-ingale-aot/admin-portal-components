@@ -33,15 +33,15 @@ interface Props {
 
 
 
-const DashboardLayout = ({ 
-    children, 
-    groups, 
-    roles, 
-    actions, 
-    user, 
-    logo, 
-    showActionsInFooter = false, 
-    headerClass, 
+const DashboardLayout = ({
+    children,
+    groups,
+    roles,
+    actions,
+    user,
+    logo,
+    showActionsInFooter = false,
+    headerClass,
     sidebarHeaderClass,
     userNameClassName,
     userEmailClassName,
