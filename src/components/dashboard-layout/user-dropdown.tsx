@@ -30,12 +30,12 @@ function initials(name: string) {
         .slice(0, 2)
 }
 
-export function UserDropdown({ 
-    user, 
-    actions, 
-    className, 
-    side = "top", 
-    align = "center", 
+export function UserDropdown({
+    user,
+    actions,
+    className,
+    side = "top",
+    align = "center",
     isSidebar = false,
     userNameClassName,
     userEmailClassName,
@@ -76,7 +76,7 @@ export function UserDropdown({
                         {triggerContent}
                     </SidebarMenuButton>
                 ) : (
-                    <button className={cn("flex items-center gap-2 h-10 px-2 rounded-md transition-colors hover:bg-black/10 dark:hover:bg-white/10 outline-none w-full", className)}>
+                    <button className={cn("flex cursor-pointer items-center gap-2 h-10 px-2 rounded-md transition-colors hover:bg-black/10 dark:hover:bg-white/10 outline-none w-full", className)}>
                         {triggerContent}
                     </button>
                 )}
