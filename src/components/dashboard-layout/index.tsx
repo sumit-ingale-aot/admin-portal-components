@@ -26,11 +26,27 @@ interface Props {
     showActionsInFooter?: boolean
     headerClass?: string;
     sidebarHeaderClass?: string
+    userNameClassName?: string
+    userEmailClassName?: string
+    avatarClassName?: string
 }
 
 
 
-const DashboardLayout = ({ children, groups, roles, actions, user, logo, showActionsInFooter = false, headerClass, sidebarHeaderClass }: Props) => {
+const DashboardLayout = ({ 
+    children, 
+    groups, 
+    roles, 
+    actions, 
+    user, 
+    logo, 
+    showActionsInFooter = false, 
+    headerClass, 
+    sidebarHeaderClass,
+    userNameClassName,
+    userEmailClassName,
+    avatarClassName
+}: Props) => {
     return (
         <TooltipProvider>
             <SidebarProvider>
@@ -42,6 +58,9 @@ const DashboardLayout = ({ children, groups, roles, actions, user, logo, showAct
                     groups={groups}
                     roles={roles}
                     sidebarHeaderClass={sidebarHeaderClass}
+                    userNameClassName={userNameClassName}
+                    userEmailClassName={userEmailClassName}
+                    avatarClassName={avatarClassName}
                 />
 
                 <SidebarInset>
@@ -57,6 +76,9 @@ const DashboardLayout = ({ children, groups, roles, actions, user, logo, showAct
                                         className="w-fit max-w-[250px]"
                                         side="bottom"
                                         align="end"
+                                        userNameClassName={userNameClassName}
+                                        userEmailClassName={userEmailClassName}
+                                        avatarClassName={avatarClassName}
                                     />
                                 )
                             }

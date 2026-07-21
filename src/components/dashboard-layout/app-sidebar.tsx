@@ -87,7 +87,9 @@ interface AppSidebarProps {
     logo: string;
     actions: Actions[];
     sidebarHeaderClass?: string
-
+    userNameClassName?: string
+    userEmailClassName?: string
+    avatarClassName?: string
 }
 
 // ───────────────────────────────────────────────────────────────────────────────
@@ -289,7 +291,10 @@ export function AppSidebar({
     user,
     logo,
     actions,
-    sidebarHeaderClass
+    sidebarHeaderClass,
+    userNameClassName,
+    userEmailClassName,
+    avatarClassName
 }: AppSidebarProps) {
 
     // Filter groups/items based on roles
@@ -346,7 +351,7 @@ export function AppSidebar({
                 <SidebarFooter>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <UserDropdown user={user} actions={actions} isSidebar={true} />
+                            <UserDropdown user={user} actions={actions} isSidebar={true} userNameClassName={userNameClassName} userEmailClassName={userEmailClassName} avatarClassName={avatarClassName} />
                         </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarFooter>

@@ -16,6 +16,9 @@ export interface UserDropdownProps {
     side?: "top" | "right" | "bottom" | "left"
     align?: "start" | "center" | "end"
     isSidebar?: boolean
+    userNameClassName?: string
+    userEmailClassName?: string
+    avatarClassName?: string
 }
 
 function initials(name: string) {
@@ -27,10 +30,20 @@ function initials(name: string) {
         .slice(0, 2)
 }
 
-export function UserDropdown({ user, actions, className, side = "top", align = "center", isSidebar = false }: UserDropdownProps) {
+export function UserDropdown({ 
+    user, 
+    actions, 
+    className, 
+    side = "top", 
+    align = "center", 
+    isSidebar = false,
+    userNameClassName,
+    userEmailClassName,
+    avatarClassName
+}: UserDropdownProps) {
     const triggerContent = (
         <>
-            <Avatar className="size-6">
+            <Avatar className={cn("size-6", avatarClassName)}>
                 <AvatarImage
                     src={user?.profile}
                     alt={user?.name || "User"}
@@ -42,11 +55,11 @@ export function UserDropdown({ user, actions, className, side = "top", align = "
             </Avatar>
 
             <div className="flex min-w-0 flex-col leading-none text-left">
-                <span className="truncate text-sm font-medium">
+                <span className={cn("truncate text-sm font-medium", userNameClassName)}>
                     {user?.name}
                 </span>
 
-                <span className="truncate text-xs opacity-70">
+                <span className={cn("truncate text-xs opacity-70", userEmailClassName)}>
                     {user?.email}
                 </span>
             </div>
