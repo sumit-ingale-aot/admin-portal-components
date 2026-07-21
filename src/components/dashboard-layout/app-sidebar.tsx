@@ -311,7 +311,7 @@ export function AppSidebar({
         .filter((group) => group.items.length > 0)
 
     return (
-        <Sidebar className=" border-r border-border !bg-transparent">
+        <Sidebar className="!bg-transparent">
             {/* ─────────────────────────────────────────────────────────────── */}
             {/* WORKSPACE SWITCHER */}
             {/* ─────────────────────────────────────────────────────────────── */}
