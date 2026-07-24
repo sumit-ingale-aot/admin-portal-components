@@ -90,11 +90,18 @@ interface AppSidebarProps {
     userNameClassName?: string
     userEmailClassName?: string
     avatarClassName?: string
+    activeTextColor?: "black" | "white"
 }
 
 // ───────────────────────────────────────────────────────────────────────────────
 // HELPERS
 // ───────────────────────────────────────────────────────────────────────────────
+
+function getActiveClasses(active: boolean, activeTextColor: "black" | "white" = "black") {
+    if (!active) return ""
+    const textColor = activeTextColor === "white" ? "text-white! hover:text-white!" : "text-black! hover:text-black!"
+    return cn("bg-primary! hover:bg-primary!/90", textColor)
+}
 
 function hasAccess(
     itemRoles?: string[],
@@ -146,9 +153,11 @@ function filterItem(
 function NavItem({
     item,
     roles,
+    activeTextColor = "black",
 }: {
     item: SidebarNavItem
     roles: string[]
+    activeTextColor?: "black" | "white"
 }) {
     const pathname = usePathname()
 
@@ -181,8 +190,7 @@ function NavItem({
                             tooltip={item.label}
                             className={cn(
                                 "w-full",
-                                (isActive || isChildActive) &&
-                                "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                                getActiveClasses(isActive || isChildActive, activeTextColor)
                             )}
                         >
                             <Icon className="size-4 shrink-0" />
@@ -198,8 +206,13 @@ function NavItem({
                             )}
 
                             <ChevronRight
-                                className={`ml-auto size-3.5 shrink-0 text-muted-foreground transition-transform duration-200 ${open ? "rotate-90" : ""
-                                    }`}
+                                className={cn(
+                                    "ml-auto size-3.5 shrink-0 transition-transform duration-200",
+                                    open && "rotate-90",
+                                    (isActive || isChildActive)
+                                        ? (activeTextColor === "white" ? "text-white!" : "text-black!")
+                                        : "text-muted-foreground"
+                                )}
                             />
                         </SidebarMenuButton>
                     </CollapsibleTrigger>
@@ -220,8 +233,7 @@ function NavItem({
                                             asChild
                                             isActive={childActive}
                                             className={cn(
-                                                childActive &&
-                                                "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                                                getActiveClasses(childActive, activeTextColor)
                                             )}
                                         >
                                             <Link href={child.href}>
@@ -260,8 +272,7 @@ function NavItem({
                 isActive={isActive}
                 tooltip={item.label}
                 className={cn(
-                    isActive &&
-                    "bg-primary! text-primary-foreground! hover:bg-primary!/90 hover:text-primary-foreground!"
+                    getActiveClasses(isActive, activeTextColor)
                 )}
             >
                 <Link href={item.href}>
@@ -294,7 +305,8 @@ export function AppSidebar({
     sidebarHeaderClass,
     userNameClassName,
     userEmailClassName,
-    avatarClassName
+    avatarClassName,
+    activeTextColor = "black",
 }: AppSidebarProps) {
 
     // Filter groups/items based on roles
@@ -319,7 +331,7 @@ export function AppSidebar({
             <SidebarHeader className={`h-16 ${sidebarHeaderClass ? sidebarHeaderClass : ""}`}>
                 <SidebarMenu>
                     <SidebarMenuItem className="flex items-center justify-center py-2">
-                        <Image src={logo} width={120} height={50} alt="logo" />
+                        <Image src={logo} width={118} height={45} alt="logo" />
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
@@ -336,6 +348,7 @@ export function AppSidebar({
                                 key={item.href}
                                 item={item}
                                 roles={roles}
+                                activeTextColor={activeTextColor}
                             />
                         ))}
                     </SidebarMenu>

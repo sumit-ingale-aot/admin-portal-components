@@ -29,6 +29,7 @@ interface Props {
     userNameClassName?: string
     userEmailClassName?: string
     avatarClassName?: string
+    activeTextColor?: "black" | "white"
 }
 
 
@@ -45,7 +46,8 @@ const DashboardLayout = ({
     sidebarHeaderClass,
     userNameClassName,
     userEmailClassName,
-    avatarClassName
+    avatarClassName,
+    activeTextColor = "black",
 }: Props) => {
     return (
         <TooltipProvider>
@@ -61,6 +63,7 @@ const DashboardLayout = ({
                     userNameClassName={userNameClassName}
                     userEmailClassName={userEmailClassName}
                     avatarClassName={avatarClassName}
+                    activeTextColor={activeTextColor}
                 />
 
                 <SidebarInset>
