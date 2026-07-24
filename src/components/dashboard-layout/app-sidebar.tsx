@@ -103,6 +103,13 @@ function getActiveClasses(active: boolean, activeTextColor: "black" | "white" = 
     return cn("bg-primary! hover:bg-primary!/90", textColor)
 }
 
+/** Exact match, or nested path under href. Ignores placeholder hrefs (#, empty). Root `/` is exact-only. */
+function isRouteActive(pathname: string, href: string): boolean {
+    if (!href || href === "#") return false
+    if (href === "/") return pathname === "/"
+    return pathname === href || pathname.startsWith(`${href}/`)
+}
+
 function hasAccess(
     itemRoles?: string[],
     userRoles: string[] = [],
@@ -162,11 +169,13 @@ function NavItem({
     const pathname = usePathname()
 
     const isChildActive =
-        item.children?.some((child) =>
-            pathname === child.href || pathname.startsWith(`${child.href}/`),
-        ) ?? false
+        item.children?.some((child) => isRouteActive(pathname, child.href)) ?? false
 
-    const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
+    // Leaf items use their own href; parents only highlight when a child route is active
+    // (parent hrefs are often placeholders like "#" / "" and must not match every path)
+    const isActive = item.children?.length
+        ? isChildActive
+        : isRouteActive(pathname, item.href)
 
     const [open, setOpen] = useState(isChildActive)
 
@@ -186,11 +195,11 @@ function NavItem({
                 <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
                         <SidebarMenuButton
-                            isActive={isActive || isChildActive}
+                            isActive={isActive}
                             tooltip={item.label}
                             className={cn(
                                 "w-full",
-                                getActiveClasses(isActive || isChildActive, activeTextColor)
+                                getActiveClasses(isActive, activeTextColor)
                             )}
                         >
                             <Icon className="size-4 shrink-0" />
@@ -209,7 +218,7 @@ function NavItem({
                                 className={cn(
                                     "ml-auto size-3.5 shrink-0 transition-transform duration-200",
                                     open && "rotate-90",
-                                    (isActive || isChildActive)
+                                    isActive
                                         ? (activeTextColor === "white" ? "text-white!" : "text-black!")
                                         : "text-muted-foreground"
                                 )}
@@ -222,8 +231,7 @@ function NavItem({
                             {item.children.map((child) => {
                                 const ChildIcon = child.icon
 
-                                const childActive =
-                                    pathname === child.href || pathname.startsWith(`${child.href}/`)
+                                const childActive = isRouteActive(pathname, child.href)
 
                                 return (
                                     <SidebarMenuSubItem
