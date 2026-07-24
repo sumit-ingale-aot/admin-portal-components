@@ -40,7 +40,8 @@ export interface Actions {
 
 export interface SidebarNavItem {
     label: string
-    href: string
+    /** Required for leaf items; omit or leave empty for collapsible parents. */
+    href?: string
     icon: LucideIcon
 
     badge?: string | number
@@ -103,11 +104,26 @@ function getActiveClasses(active: boolean, activeTextColor: "black" | "white" = 
     return cn("bg-primary! hover:bg-primary!/90", textColor)
 }
 
-/** Exact match, or nested path under href. Ignores placeholder hrefs (#, empty). Root `/` is exact-only. */
-function isRouteActive(pathname: string, href: string): boolean {
-    if (!href || href === "#") return false
-    if (href === "/") return pathname === "/"
-    return pathname === href || pathname.startsWith(`${href}/`)
+function normalizePath(path: string): string {
+    if (path === "/") return "/"
+    return path.replace(/\/+$/, "") || "/"
+}
+
+/**
+ * Exact match, or nested path under href.
+ * Ignores missing, whitespace-only, and "#" placeholder hrefs.
+ * Root `/` is exact-match only (must not use startsWith("/") which matches every route).
+ */
+function isRouteActive(pathname: string, href?: string): boolean {
+    if (href == null) return false
+    const trimmed = href.trim()
+    if (!trimmed || trimmed === "#") return false
+
+    const path = normalizePath(pathname)
+    const target = normalizePath(trimmed)
+
+    if (target === "/") return path === "/"
+    return path === target || path.startsWith(`${target}/`)
 }
 
 function hasAccess(
@@ -230,12 +246,13 @@ function NavItem({
                         <SidebarMenuSub>
                             {item.children.map((child) => {
                                 const ChildIcon = child.icon
+                                const childHref = child.href?.trim() || "#"
 
                                 const childActive = isRouteActive(pathname, child.href)
 
                                 return (
                                     <SidebarMenuSubItem
-                                        key={child.href}
+                                        key={childHref !== "#" ? childHref : child.label}
                                     >
                                         <SidebarMenuSubButton
                                             asChild
@@ -244,7 +261,7 @@ function NavItem({
                                                 getActiveClasses(childActive, activeTextColor)
                                             )}
                                         >
-                                            <Link href={child.href}>
+                                            <Link href={childHref}>
                                                 <ChildIcon className="size-3.5 shrink-0" />
 
                                                 <span>
@@ -283,7 +300,7 @@ function NavItem({
                     getActiveClasses(isActive, activeTextColor)
                 )}
             >
-                <Link href={item.href}>
+                <Link href={item.href?.trim() || "#"}>
                     <Icon className="size-4 shrink-0" />
 
                     <span>{item.label}</span>
@@ -353,7 +370,7 @@ export function AppSidebar({
                     <SidebarMenu>
                         {visibleGroups.flatMap((group) => group.items).map((item) => (
                             <NavItem
-                                key={item.href}
+                                key={item.href?.trim() || item.label}
                                 item={item}
                                 roles={roles}
                                 activeTextColor={activeTextColor}
