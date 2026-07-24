@@ -184,14 +184,9 @@ function NavItem({
 }) {
     const pathname = usePathname()
 
+    // Used only to auto-expand parents when a child route is active — parents never get active styles
     const isChildActive =
         item.children?.some((child) => isRouteActive(pathname, child.href)) ?? false
-
-    // Leaf items use their own href; parents only highlight when a child route is active
-    // (parent hrefs are often placeholders like "#" / "" and must not match every path)
-    const isActive = item.children?.length
-        ? isChildActive
-        : isRouteActive(pathname, item.href)
 
     const [open, setOpen] = useState(isChildActive)
 
@@ -211,12 +206,9 @@ function NavItem({
                 <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
                         <SidebarMenuButton
-                            isActive={isActive}
+                            isActive={false}
                             tooltip={item.label}
-                            className={cn(
-                                "w-full",
-                                getActiveClasses(isActive, activeTextColor)
-                            )}
+                            className="w-full"
                         >
                             <Icon className="size-4 shrink-0" />
 
@@ -232,11 +224,8 @@ function NavItem({
 
                             <ChevronRight
                                 className={cn(
-                                    "ml-auto size-3.5 shrink-0 transition-transform duration-200",
+                                    "ml-auto size-3.5 shrink-0 text-muted-foreground transition-transform duration-200",
                                     open && "rotate-90",
-                                    isActive
-                                        ? (activeTextColor === "white" ? "text-white!" : "text-black!")
-                                        : "text-muted-foreground"
                                 )}
                             />
                         </SidebarMenuButton>
@@ -289,6 +278,8 @@ function NavItem({
     // ───────────────────────────────────────────────────────────────────────────
     // LEAF ITEM
     // ───────────────────────────────────────────────────────────────────────────
+
+    const isActive = isRouteActive(pathname, item.href)
 
     return (
         <SidebarMenuItem>
